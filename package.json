@@ -1,6 +1,6 @@
 {
   "name": "diff-match-patch",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "npm package for https://code.google.com/p/google-diff-match-patch/",
   "keywords": [],
   "dependencies": {},
