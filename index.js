@@ -2186,8 +2186,13 @@ diff_match_patch.patch_obj.prototype.toString = function() {
 
 
 // The following export code was added by @ForbesLindesay
-module.exports = diff_match_patch;
-module.exports['diff_match_patch'] = diff_match_patch;
-module.exports['DIFF_DELETE'] = DIFF_DELETE;
-module.exports['DIFF_INSERT'] = DIFF_INSERT;
-module.exports['DIFF_EQUAL'] = DIFF_EQUAL;
+// modified by @limdauto
+if (typeof module != "undefined" && module !== null && module.exports) {
+    module.exports = diff_match_patch;
+    module.exports['diff_match_patch'] = diff_match_patch;
+    module.exports['DIFF_DELETE'] = DIFF_DELETE;
+    module.exports['DIFF_INSERT'] = DIFF_INSERT;
+    module.exports['DIFF_EQUAL'] = DIFF_EQUAL;
+}
+else if (typeof define === "function" && define.amd) define(function() {return diff_match_patch;});
+else window.diff_match_patch = diff_match_patch;
