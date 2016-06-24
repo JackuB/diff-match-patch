@@ -2058,7 +2058,7 @@ diff_match_patch.prototype.patch_fromText = function(textline) {
   if (!textline) {
     return patches;
   }
-  var text = textline.split('\n');
+  var text = textline.split(diff_match_patch.linebreakRegex_);
   var textPointer = 0;
   var patchHeader = /^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/;
   while (textPointer < text.length) {
