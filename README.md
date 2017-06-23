@@ -1,7 +1,5 @@
 # diff-match-patch
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/diff-match-patch.svg)](https://greenkeeper.io/)
-
 npm package for https://code.google.com/p/google-diff-match-patch/
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/diff-match-patch/master.svg)](https://travis-ci.org/ForbesLindesay/diff-match-patch)
