@@ -2,8 +2,8 @@
 
 npm package for https://code.google.com/p/google-diff-match-patch/
 
-[![Build Status](https://img.shields.io/travis/ForbesLindesay/diff-match-patch/master.svg)](https://travis-ci.org/ForbesLindesay/diff-match-patch)
-[![Dependency Status](https://img.shields.io/david/ForbesLindesay/diff-match-patch.svg)](https://david-dm.org/ForbesLindesay/diff-match-patch)
+[![Build Status](https://img.shields.io/travis/JackuB/diff-match-patch/master.svg)](https://travis-ci.org/JackuB/diff-match-patch)
+[![Dependency Status](https://img.shields.io/david/JackuB/diff-match-patch.svg)](https://david-dm.org/JackuB/diff-match-patch)
 [![NPM version](https://img.shields.io/npm/v/diff-match-patch.svg)](https://www.npmjs.com/package/diff-match-patch)
 
 ## Installation
