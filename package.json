@@ -12,7 +12,10 @@
     "testit": "^3.0.0"
   },
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "fetch": "node run/fetch",
+    "postinstall": "npm run -s fetch",
+    "clear": "git checkout HEAD -- index.js test/index.js"
   },
   "repository": {
     "type": "git",
