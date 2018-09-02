@@ -1,19 +1,16 @@
 'use strict'
 
-var assert = require('assert');
-var test = require('testit');
-var diff_match_patch = require('../');
-var DIFF_DELETE = diff_match_patch.DIFF_DELETE;
-var DIFF_INSERT = diff_match_patch.DIFF_INSERT;
-var DIFF_EQUAL = diff_match_patch.DIFF_EQUAL;
-
-
+const assert = require('assert');
+const test = require('testit');
+const diff_match_patch = require('../');
+const DIFF_DELETE = diff_match_patch.DIFF_DELETE;
+const DIFF_INSERT = diff_match_patch.DIFF_INSERT;
+const DIFF_EQUAL = diff_match_patch.DIFF_EQUAL;
 
 /**
- * Test Harness for Diff Match and Patch
- *
- * Copyright 2006 Google Inc.
- * http://code.google.com/p/google-diff-match-patch/
+ * Diff Match and Patch -- Test Harness
+ * Copyright 2018 The diff-match-patch Authors.
+ * https://github.com/google/diff-match-patch
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,9 +35,9 @@ function assertEquivalent(msg, expected, actual) {
     msg = 'Expected: \'' + expected + '\' Actual: \'' + actual + '\'';
   }
   if (_equivalent(expected, actual)) {
-    assertEquals(msg, String.toString(expected), String.toString(actual));
+    return assertEquals(msg, String(expected), String(actual));
   } else {
-    assertEquals(msg, expected, actual);
+    return assertEquals(msg, expected, actual);
   }
 }
 
@@ -55,12 +52,12 @@ function _equivalent(a, b) {
       return false;
     }
     for (var p in a) {
-      if (!_equivalent(a[p], b[p])) {
+      if (a.hasOwnProperty(p) && !_equivalent(a[p], b[p])) {
         return false;
       }
     }
     for (var p in b) {
-      if (!_equivalent(a[p], b[p])) {
+      if (a.hasOwnProperty(p) && !_equivalent(a[p], b[p])) {
         return false;
       }
     }
@@ -186,9 +183,9 @@ function testDiffLinesToChars() {
   var n = 300;
   var lineList = [];
   var charList = [];
-  for (var x = 1; x < n + 1; x++) {
-    lineList[x - 1] = x + '\n';
-    charList[x - 1] = String.fromCharCode(x);
+  for (var i = 1; i < n + 1; i++) {
+    lineList[i - 1] = i + '\n';
+    charList[i - 1] = String.fromCharCode(i);
   }
   assertEquals(n, lineList.length);
   var lines = lineList.join('');
@@ -208,9 +205,9 @@ function testDiffCharsToLines() {
   var n = 300;
   var lineList = [];
   var charList = [];
-  for (var x = 1; x < n + 1; x++) {
-    lineList[x - 1] = x + '\n';
-    charList[x - 1] = String.fromCharCode(x);
+  for (var i = 1; i < n + 1; i++) {
+    lineList[i - 1] = i + '\n';
+    charList[i - 1] = String.fromCharCode(i);
   }
   assertEquals(n, lineList.length);
   var lines = lineList.join('');
@@ -220,6 +217,17 @@ function testDiffCharsToLines() {
   var diffs = [[DIFF_DELETE, chars]];
   dmp.diff_charsToLines_(diffs, lineList);
   assertEquivalent([[DIFF_DELETE, lines]], diffs);
+
+  // More than 65536 to verify any 16-bit limitation.
+  lineList = [];
+  for (var i = 0; i < 66000; i++) {
+    lineList[i] = i + '\n';
+  }
+  chars = lineList.join('');
+  var results = dmp.diff_linesToChars_(chars, '');
+  diffs = [[DIFF_INSERT, results.chars1]];
+  dmp.diff_charsToLines_(diffs, results.lineArray);
+  assertEquals(chars, diffs[0][1]);
 }
 
 function testDiffCleanupMerge() {
@@ -283,6 +291,16 @@ function testDiffCleanupMerge() {
   diffs = [[DIFF_EQUAL, 'x'], [DIFF_DELETE, 'ca'], [DIFF_EQUAL, 'c'], [DIFF_DELETE, 'b'], [DIFF_EQUAL, 'a']];
   dmp.diff_cleanupMerge(diffs);
   assertEquivalent([[DIFF_EQUAL, 'xca'], [DIFF_DELETE, 'cba']], diffs);
+
+  // Empty merge.
+  diffs = [[DIFF_DELETE, 'b'], [DIFF_INSERT, 'ab'], [DIFF_EQUAL, 'c']];
+  dmp.diff_cleanupMerge(diffs);
+  assertEquivalent([[DIFF_INSERT, 'a'], [DIFF_EQUAL, 'bc']], diffs);
+
+  // Empty equality.
+  diffs = [[DIFF_EQUAL, ''], [DIFF_INSERT, 'a'], [DIFF_EQUAL, 'b']];
+  dmp.diff_cleanupMerge(diffs);
+  assertEquivalent([[DIFF_INSERT, 'a'], [DIFF_EQUAL, 'b']], diffs);
 }
 
 function testDiffCleanupSemanticLossless() {
@@ -493,6 +511,18 @@ function testDiffDelta() {
 
   // Convert delta string into a diff.
   assertEquivalent(diffs, dmp.diff_fromDelta('', delta));
+
+  // 160 kb string.
+  var a = 'abcdefghij';
+  for (var i = 0; i < 14; i++) {
+    a += a;
+  }
+  diffs = [[DIFF_INSERT, a]];
+  delta = dmp.diff_toDelta(diffs);
+  assertEquals('+' + a, delta);
+
+  // Convert delta string into a diff.
+  assertEquivalent(diffs, dmp.diff_fromDelta('', delta));
 }
 
 function testDiffXIndex() {
@@ -571,9 +601,9 @@ function testDiffMain() {
   var a = '`Twas brillig, and the slithy toves\nDid gyre and gimble in the wabe:\nAll mimsy were the borogoves,\nAnd the mome raths outgrabe.\n';
   var b = 'I am the very model of a modern major general,\nI\'ve information vegetable, animal, and mineral,\nI know the kings of England, and I quote the fights historical,\nFrom Marathon to Waterloo, in order categorical.\n';
   // Increase the text lengths by 1024 times to ensure a timeout.
-  for (var x = 0; x < 10; x++) {
-    a = a + a;
-    b = b + b;
+  for (var i = 0; i < 10; i++) {
+    a += a;
+    b += b;
   }
   var startTime = (new Date()).getTime();
   dmp.diff_main(a, b);
@@ -583,11 +613,7 @@ function testDiffMain() {
   // Test that we didn't take forever (be forgiving).
   // Theoretically this test could fail very occasionally if the
   // OS task swaps or locks up for a second at the wrong moment.
-  // ****
-  // TODO(fraser): For unknown reasons this is taking 500 ms on Google's
-  // internal test system.  Whereas browsers take 140 ms.
-  //assertTrue(dmp.Diff_Timeout * 1000 * 2 > endTime - startTime);
-  // ****
+  assertTrue(dmp.Diff_Timeout * 1000 * 2 > endTime - startTime);
   dmp.Diff_Timeout = 0;
 
   // Test the linemode speedup.
@@ -985,38 +1011,38 @@ function assertFalse(msg, actual) {
 }
 
 var tests = [
-    'testDiffCommonPrefix',
-    'testDiffCommonSuffix',
-    'testDiffCommonOverlap',
-    'testDiffHalfMatch',
-    'testDiffLinesToChars',
-    'testDiffCharsToLines',
-    'testDiffCleanupMerge',
-    'testDiffCleanupSemanticLossless',
-    'testDiffCleanupSemantic',
-    'testDiffCleanupEfficiency',
-    'testDiffPrettyHtml',
-    'testDiffText',
-    'testDiffDelta',
-    'testDiffXIndex',
-    'testDiffLevenshtein',
-    'testDiffBisect',
-    'testDiffMain',
+  'testDiffCommonPrefix',
+  'testDiffCommonSuffix',
+  'testDiffCommonOverlap',
+  'testDiffHalfMatch',
+  'testDiffLinesToChars',
+  'testDiffCharsToLines',
+  'testDiffCleanupMerge',
+  'testDiffCleanupSemanticLossless',
+  'testDiffCleanupSemantic',
+  'testDiffCleanupEfficiency',
+  'testDiffPrettyHtml',
+  'testDiffText',
+  'testDiffDelta',
+  'testDiffXIndex',
+  'testDiffLevenshtein',
+  'testDiffBisect',
+  'testDiffMain',
 
-    'testMatchAlphabet',
-    'testMatchBitap',
-    'testMatchMain',
+  'testMatchAlphabet',
+  'testMatchBitap',
+  'testMatchMain',
 
-    'testPatchObj',
-    'testPatchFromText',
-    'testPatchToText',
-    'testPatchAddContext',
-    'testPatchMake',
-    'testPatchSplitMax',
-    'testPatchAddPadding',
-    'testPatchApply'];
+  'testPatchObj',
+  'testPatchFromText',
+  'testPatchToText',
+  'testPatchAddContext',
+  'testPatchMake',
+  'testPatchSplitMax',
+  'testPatchAddPadding',
+  'testPatchApply',
+];
 
-
-  for (var x = 0; x < tests.length; x++) {
-    test(tests[x], eval(tests[x]))
-  }
+for (var x = 0; x < tests.length; x++) {
+  test(tests[x], eval(tests[x]))
+}
