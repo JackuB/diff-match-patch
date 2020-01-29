@@ -1,22 +1,23 @@
 {
-  "name": "diff-match-patch",
+  "name": "diff-match-patch-with-word",
   "version": "1.0.4",
-  "description": "npm package for https://github.com/google/diff-match-patch",
+  "description": "This package adds the diff per word using the https://github.com/google/diff-match-patch as base",
   "keywords": [
     "diff",
     "diff-match-patch",
-    "google-diff-match-patch"
+    "google-diff-match-patch",
+    "diff word"
   ],
   "dependencies": {},
   "devDependencies": {
-    "testit": "^3.0.0"
+    "testit": "^3.1.0"
   },
   "scripts": {
     "test": "node test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JackuB/diff-match-patch.git"
+    "url": "https://github.com/joassouza/diff-match-patch.git"
   },
   "license": "Apache-2.0"
 }

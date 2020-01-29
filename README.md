@@ -1,6 +1,7 @@
 # diff-match-patch
 
-npm package for https://github.com/google/diff-match-patch
+This fork adds a diff per word using diff-match-patch as base
+Original package https://github.com/google/diff-match-patch
 
 [![Build Status](https://img.shields.io/travis/JackuB/diff-match-patch/master.svg)](https://travis-ci.org/JackuB/diff-match-patch)
 [![Dependency Status](https://img.shields.io/david/JackuB/diff-match-patch.svg)](https://david-dm.org/JackuB/diff-match-patch)
@@ -75,6 +76,20 @@ Applies a list of patches to text1. The first element of the return value is the
 
 The previously mentioned Match_Distance and Match_Threshold properties are used to evaluate patch application on text which does not match exactly. In addition, the `diff_match_patch.Patch_DeleteThreshold` property determines how closely the text within a major (~64 character) delete needs to match the expected text. If Patch_DeleteThreshold is closer to 0, then the deleted text must match the expected text more closely. If Patch_DeleteThreshold is closer to 1, then the deleted text may contain anything. In most use cases Patch_DeleteThreshold should just be set to the same value as Match_Threshold.
 
+
+## Diff per Word Example
+var diff = require('diff-match-patch');
+
+var diffPerWord = function(text1, text2) {
+  var dmp = new diff();
+  var b = dmp.diff_linesToWords_(text1, text2);
+  var lineArray = b.lineArray;
+  var lineText1 = b.chars1;
+  var lineText2 = b.chars2;
+  var diffs = dmp.diff_main(lineText1, lineText2, false);
+  dmp.diff_charsToLines_(diffs, lineArray);
+  return diffs;
+}
 
 ## Usage
 ```javascript

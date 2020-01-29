@@ -222,6 +222,20 @@ function testDiffCharsToLines() {
   assertEquivalent([[DIFF_DELETE, lines]], diffs);
 }
 
+function testDiffLinesToWords() {
+  function assetLinesToWordResultEquals(a, b) {
+    assertEquals(a.chars1, b.chars1);
+    assertEquals(a.chars2, b.chars2);
+    assertEquivalent(a.lineArray, b.lineArray);
+  }
+
+  assetLinesToWordResultEquals(
+    { chars1: '\x01\x02\x03\x04',
+    chars2: '\x01\x05\x03\x04',
+    lineArray: ['', 'aa ', 'b1 ', '\n', 'cd', 'b2 ']},
+    dmp.diff_linesToWords_('aa b1 \ncd', 'aa b2 \ncd'));
+}
+
 function testDiffCleanupMerge() {
   // Cleanup a messy diff.
   // Null case.
@@ -985,6 +999,7 @@ function assertFalse(msg, actual) {
 }
 
 var tests = [
+    'testDiffLinesToWords',
     'testDiffCommonPrefix',
     'testDiffCommonSuffix',
     'testDiffCommonOverlap',
