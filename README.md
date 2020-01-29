@@ -78,6 +78,7 @@ The previously mentioned Match_Distance and Match_Threshold properties are used 
 
 
 ## Diff per Word Example
+``` javacript
 var diff = require('diff-match-patch');
 
 var diffPerWord = function(text1, text2) {
@@ -90,6 +91,7 @@ var diffPerWord = function(text1, text2) {
   dmp.diff_charsToLines_(diffs, lineArray);
   return diffs;
 }
+```
 
 ## Usage
 ```javascript
