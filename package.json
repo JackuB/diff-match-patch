@@ -2,6 +2,10 @@
   "name": "diff-match-patch",
   "version": "1.0.5",
   "description": "npm package for https://github.com/google/diff-match-patch",
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
   "keywords": [
     "diff",
     "diff-match-patch",

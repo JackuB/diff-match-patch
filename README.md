@@ -78,15 +78,15 @@ The previously mentioned Match_Distance and Match_Threshold properties are used 
 
 ## Usage
 ```javascript
-import DiffMatchPatch from 'diff-match-patch';
+import { diff_match_patch, patch_obj, DIFF_DELETE, DIFF_INSERT, DIFF_EQUAL } from 'diff-match-patch';
 
-const dmp = new DiffMatchPatch();
+const dmp = new diff_match_patch();
 const diff = dmp.diff_main('dogs bark', 'cats bark');
 
 // You can also use the following properties:
-DiffMatchPatch.DIFF_DELETE = -1;
-DiffMatchPatch.DIFF_INSERT = 1;
-DiffMatchPatch.DIFF_EQUAL = 0;
+// DIFF_DELETE = -1;
+// DIFF_INSERT = 1;
+// DIFF_EQUAL = 0;
 ```
 
 ## License
