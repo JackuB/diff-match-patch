@@ -1266,9 +1266,9 @@ diff_match_patch.prototype.diff_prettyHtml = function(diffs) {
 
 
 /**
- * Convert a diff array into a pretty HTML report.
+ * Convert a diff array into a LaTeX report.
  * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
- * @return {string} HTML representation.
+ * @return {string} LaTeX representation.
  */
 diff_match_patch.prototype.diff_latex = function(diffs) {
   const latex = [];
