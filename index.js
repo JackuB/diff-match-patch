@@ -1270,17 +1270,17 @@ diff_match_patch.prototype.diff_prettyHtml = function(diffs) {
  * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
  * @return {string} LaTeX representation.
  */
-diff_match_patch.prototype.diff_latex = function(diffs) {
+diff_match_patch.prototype.diff_latex = function(diffs,insertColor = 'Green', deleteColor = 'RedOrange') {
   const latex = [];
   for (let x = 0; x < diffs.length; x++) {
     const op = diffs[x][0];    // Operation (insert, delete, equal)
     const data = diffs[x][1];  // Text of change.
     switch (op) {
       case DIFF_INSERT:
-        latex[x] = '\\colorbox{Green}{' + data + '}';
+        latex[x] = `\\colorbox{${insertColor}{${data}}`;
         break;
       case DIFF_DELETE:
-        latex[x] = '\\st{\\colorbox{RedOrange}{' + data + '}}';
+        latex[x] = `\\st{\\colorbox{${deleteColor}}${data}}`;
         break;
       case DIFF_EQUAL:
         latex[x] = data;
