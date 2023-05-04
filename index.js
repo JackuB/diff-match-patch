@@ -1283,7 +1283,7 @@ diff_match_patch.prototype.diff_latex = function(diffs) {
         latex[x] = '\\st{\\colorbox{RedOrange}{' + data + '}}';
         break;
       case DIFF_EQUAL:
-        latex[x] = text;
+        latex[x] = data;
         break;
     }
   }
