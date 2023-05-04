@@ -1277,10 +1277,10 @@ diff_match_patch.prototype.diff_latex = function(diffs,insertColor = 'Green', de
     const data = diffs[x][1];  // Text of change.
     switch (op) {
       case DIFF_INSERT:
-        latex[x] = `\\colorbox{${insertColor}{${data}}`;
+        latex[x] = '\\colorbox{' + insertColor + '}{' + data + '}';
         break;
       case DIFF_DELETE:
-        latex[x] = `\\st{\\colorbox{${deleteColor}}${data}}`;
+        latex[x] = '\\st{\\colorbox{' + deleteColor+ '}{' + data +'}';
         break;
       case DIFF_EQUAL:
         latex[x] = data;
