@@ -1280,7 +1280,7 @@ diff_match_patch.prototype.diff_latex = function(diffs,insertColor = 'Green', de
         latex[x] = '\\colorbox{' + insertColor + '}{' + data + '}';
         break;
       case DIFF_DELETE:
-        latex[x] = '\\st{\\colorbox{' + deleteColor+ '}{' + data +'}';
+        latex[x] = '\\st{\\colorbox{' + deleteColor+ '}{' + data +'}}';
         break;
       case DIFF_EQUAL:
         latex[x] = data;
