@@ -1266,6 +1266,32 @@ diff_match_patch.prototype.diff_prettyHtml = function(diffs) {
 
 
 /**
+ * Convert a diff array into a LaTeX report.
+ * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
+ * @return {string} LaTeX representation.
+ */
+diff_match_patch.prototype.diff_latex = function(diffs,insertColor = 'Green', deleteColor = 'RedOrange') {
+  const latex = [];
+  for (let x = 0; x < diffs.length; x++) {
+    const op = diffs[x][0];    // Operation (insert, delete, equal)
+    const data = diffs[x][1];  // Text of change.
+    switch (op) {
+      case DIFF_INSERT:
+        latex[x] = '\\colorbox{' + insertColor + '}{' + data + '}';
+        break;
+      case DIFF_DELETE:
+        latex[x] = '\\st{\\colorbox{' + deleteColor+ '}{' + data +'}}';
+        break;
+      case DIFF_EQUAL:
+        latex[x] = data;
+        break;
+    }
+  }
+  return latex.join('');
+};
+
+
+/**
  * Compute and return the source text (all equalities and deletions).
  * @param {!Array.<!diff_match_patch.Diff>} diffs Array of diff tuples.
  * @return {string} Source text.
